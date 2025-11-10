@@ -16,6 +16,15 @@ export function getPostUrlBySlug(slug: string): string {
 	return url(`/posts/${slug}/`);
 }
 
+/**
+ * 根据 slug 获取 photo 的 URL
+ * @param slug - photo 的 slug
+ * @returns photo 的完整 URL
+ */
+export function getPhotoUrlBySlug(slug: string): string {
+	return url(`/photos/${slug}/`);
+}
+
 export function getTagUrl(tag: string): string {
 	if (!tag) return url("/archive/");
 	return url(`/archive/?tag=${encodeURIComponent(tag.trim())}`);

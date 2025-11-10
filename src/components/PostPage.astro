@@ -1,15 +1,20 @@
 ---
 import type { CollectionEntry } from "astro:content";
-import { getPostUrlBySlug } from "@utils/url-utils";
+import { getPostUrlBySlug, getPhotoUrlBySlug } from "@utils/url-utils";
 import PostCard from "./PostCard.astro";
 
 const { page } = Astro.props;
 
 let delay = 0;
 const interval = 50;
+
+// 根据集合类型获取 URL 的辅助函数
+function getUrlBySlug(entry: CollectionEntry<"posts"> | CollectionEntry<"images">) {
+    return entry.collection === "images" ? getPhotoUrlBySlug(entry.slug) : getPostUrlBySlug(entry.slug);
+}
 ---
 <div class="transition flex flex-col rounded-[var(--radius-large)] bg-[var(--card-bg)] py-1 md:py-0 md:bg-transparent md:gap-4 mb-4">
-    {page.data.map((entry: CollectionEntry<"posts">) => (
+    {page.data.map((entry: CollectionEntry<"posts"> | CollectionEntry<"images">) => (
         <PostCard
                 entry={entry}
                 title={entry.data.title}
@@ -17,7 +22,7 @@ const interval = 50;
                 category={entry.data.category}
                 published={entry.data.published}
                 updated={entry.data.updated}
-                url={getPostUrlBySlug(entry.slug)}
+                url={getUrlBySlug(entry)}
                 image={entry.data.image}
                 description={entry.data.description}
                 draft={entry.data.draft}
